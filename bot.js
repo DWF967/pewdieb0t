@@ -54,7 +54,7 @@ function subGap()
 {
     let pewdsSubCount = getChannelData('pewdiepie');
     let tseriesSubCount = getChannelData('tseries');
-    return pewdsSubCount - tseriesSubCount;
+    return (pewdsSubCount - tseriesSubCount).toLocaleString('en');
 }
 
 async function alertGap()
@@ -76,8 +76,8 @@ async function tweetSubCount()
 {
     setInterval(function(){
         let subgap = subGap();
-        let pewdsCount = getChannelData('pewdiepie');
-        let tCount = getChannelData('tseries');
+        let pewdsCount = getChannelData('pewdiepie').toLocaleString('en');
+        let tCount = getChannelData('tseries').toLocaleString('en');
 
         tweetIt(`PewDiePie currently has ${pewdsCount}. T-Series currently has ${tCount}. The subgap is currenly at ${subgap}. #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
     }, 1000*60*60)
