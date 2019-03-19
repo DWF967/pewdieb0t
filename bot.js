@@ -16,43 +16,44 @@ const maxTweetsInHour = 10;
 var tweetsInHour = 0;
 var replyToId;
 var previousReplyId;
+var previousGap;
 
-tweetIt(`The subgap is currently ${subGap()}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+tweetIt(`Bot has started. \n\nThe subgap is currently ${subGap()}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
 
-tweetSubCount();
 alertGap();
 negativeAlert();
-reply('pewdiepie', `The subgap is currenly at ${(getChannelData('pewdiepie') - getChannelData('tseries')).toLocaleString('en')}. #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+tweetSubCount();
+reply('pewdiepie', `The subgap is currenly at ${(getChannelData('pewdiepie') - getChannelData('tseries')).toLocaleString('en')}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
 resetConstraints();
 
 function subGap()
 {
     let pewdsSubCount = getChannelData('pewdiepie');
     let tseriesSubCount = getChannelData('tseries');
-    return (pewdsSubCount - tseriesSubCount).toLocaleString('en');
+    return (pewdsSubCount - tseriesSubCount);
 }
 
 async function alertGap()
 {
     setInterval(function(){
         let subgap = subGap();
-        if(subgap < dangerZone)
+        if(subgap < 5000)
         {
-            tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE SUBGAP IS NOW ${subgap}! WE NEED TO DO SOMETHING! THIS CANNOT BE THE END! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+            tweetIt(`🚨🚨ALERT! SUBGAP < 5,000 ALERT!🚨🚨 \n\nTHE SUBGAP IS NOW ${subgap.toLocaleString('en')}! \nWE NEED TO DO SOMETHING! THIS CANNOT BE THE END! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
-        else if(subgap < (dangerZone / 2))
+        else if(subgap < 1000)
         {
-            tweetIt(`🚨🚨ALERT! SUBGAP < ${(dangerZone / 2).toLocaleString('en')} ALERT!🚨🚨 THE SUBGAP IS NOW ${subgap}! WE NEED TO DO SOMETHING! THIS CANNOT BE THE END! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+            tweetIt(`🚨🚨ALERT! SUBGAP < 1,000 ALERT!🚨🚨 \n\nTHE SUBGAP IS NOW ${subgap.toLocaleString('en')}! \nWE NEED TO DO SOMETHING! THIS CANNOT BE THE END! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
-        else if(subgap < (dangerZone / 10))
+        else if(subgap < 500)
         {
-            tweetIt(`🚨🚨ALERT! SUBGAP < ${(dangerZone / 10).toLocaleString('en')} ALERT!🚨🚨 THE SUBGAP IS NOW ${subgap}! WE NEED TO DO SOMETHING! THIS CANNOT BE THE END! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+            tweetIt(`🚨🚨ALERT! SUBGAP < 500 ALERT!🚨🚨 \n\nTHE SUBGAP IS NOW ${subgap.toLocaleString('en')}! \nWE NEED TO DO SOMETHING! THIS CANNOT BE THE END! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
-        else if(subgap < (dangerZone / 20))
+        else if(subgap < dangerZone)
         {
-            tweetIt(`🚨🚨ALERT! SUBGAP < ${(dangerZone / 20).toLocaleString('en')} ALERT!🚨🚨 THE SUBGAP IS NOW ${subgap}! WE NEED TO DO SOMETHING! THIS CANNOT BE THE END! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+            tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 \n\nTHE SUBGAP IS NOW ${subgap.toLocaleString('en')}! \nWE NEED TO DO SOMETHING! THIS CANNOT BE THE END! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
-    }, 1000*60*15);
+    }, 1000*60*30);
 }
 
 async function negativeAlert()
@@ -61,20 +62,26 @@ async function negativeAlert()
         let subgap = subGap();
         if(subgap < 0)
         {
-            tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE SUBGAP IS NOW NEGATIVE! T-SERIES HAS PASSED PEWDS! ${subgap}! EVERYONE SUBSCRIBE TO GET PEWDIEPIE BACK! THIS IS NOT THE END! LETS GET #Sub2Pewds TRENDING! #PewDiePie #TSeries #MemeReview #Subgap`);
+            tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE SUBGAP IS NOW NEGATIVE! \n\nT-SERIES HAS PASSED PEWDS! ${subgap.toLocaleString('en')}! \nEVERYONE SUBSCRIBE TO GET PEWDIEPIE BACK! THIS IS NOT THE END! LETS GET \n\n#Sub2Pewds TRENDING! #PewDiePie #TSeries #MemeReview #Subgap`);
+            previousGap = subgap;
         }
-    }, 1000*60*2);
+        else if(subgap > 0 && previousGap < 0)
+        {
+            tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE GAP IS POSITIVE AGAIN! \n\n${subgap.toLocaleString('en')}! \nWE WILL NOT STOP FIGHTING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
+            previousGap = subgap;
+        }
+    }, 1000*60*2)
 }
 
 async function tweetSubCount()
 {
     setInterval(function(){
-        let subgap = subGap();
+        let subgap = subGap().toLocaleString('en');
         let pewdsCount = getChannelData('pewdiepie').toLocaleString('en');
         let tCount = getChannelData('tseries').toLocaleString('en');
 
         tweetIt(`PewDiePie currently has ${pewdsCount}. T-Series currently has ${tCount}. The subgap is currenly at ${subgap}. #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
-    }, 1000*60*60*4)
+    }, 1000*60*60*5)
 }
 
 async function resetConstraints()
