@@ -26,7 +26,7 @@ var tweetsInHour = 0;
 var replyToId;
 var previousReplyId;
 var previousGap = 1;
-var previous;
+var previous = subGap();
 
 console.log(`Bot has started!`)
 tweetIt(`The subgap is currently ${subGap().toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
