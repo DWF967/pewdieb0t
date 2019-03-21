@@ -8,7 +8,6 @@ const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 global.document = document;
 const $ = jQuery = require('jquery')(window);
-
 const T = new Twit(Config);
 const KEY = process.env.YT_KEY;
 const dangerZone = 10000;
@@ -23,10 +22,6 @@ const messages = [
 ];
 
 var tweetsInHour = 0;
-var replyToId;
-var previousReplyId;
-var previousGap = 1;
-var previous = subGap();
 
 console.log(`Bot has started!`)
 tweetIt(`The subgap is currently ${subGap().toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
@@ -47,6 +42,7 @@ function subGap()
 
 async function alertGap()
 {
+    var previous = subGap();
     setInterval(function(){
         let subgap = subGap();
         if(subgap < 500 && subgap > 0)
@@ -75,6 +71,7 @@ async function alertGap()
 
 async function negativeAlert()
 {
+    var previousGap = 1;
     setInterval(function(){
         let subgap = subGap();
         if(subgap < 0 && previousGap > 0)
@@ -87,7 +84,7 @@ async function negativeAlert()
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE GAP IS POSITIVE AGAIN! \n\n${subgap.toLocaleString('en')}! \nWE WILL KEEP FIGHTING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
             previousGap = subgap;
         }
-    }, 1000*15)
+    }, 1000*60*10)
 }
 
 async function tweetSubCount()
@@ -122,23 +119,29 @@ function selectMessage()
   */
 async function reply(screenName)
 {
+    var replyToId;
+    var previousReplyId;
     setInterval(function(){
-        let subgap = subGap();
         T.get('statuses/user_timeline', { screen_name: screenName, count: 1 }, function(err, data, response) {
             replyToId = data[0].id_str;
 
-            var opts = {
-                in_reply_to_status_id: replyToId,
-                status: `@${screenName} The subgap is currenly at ${subgap.toLocaleString('en')}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`
-            }
-
             if(replyToId !== null && replyToId !== previousReplyId)
             {
-                T.post('statuses/update', opts, function(err, data, response){
-                    if(err) console.log(`Something went horribly wrong!: ${err}`)
-                    else { console.log(`Tweeted: 'The subgap is currenly at ${subgap.toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds' in response to: ${screenName}`); previousReplyId = replyToId; replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
-                });
-            }
+                let subgap = subGap();
+                if(!isNaN(subgap))
+                {
+                    var opts = {
+                        in_reply_to_status_id: replyToId,
+                        status: `@${screenName} The subgap is currenly at ${subgap.toLocaleString('en')}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`
+                    }
+
+                    T.post('statuses/update', opts, function(err, data, response){
+                        if(err) console.log(`Something went horribly wrong!: ${err}`)
+                        else { console.log(`Tweeted: 'The subgap is currenly at ${subgap.toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds' in response to: ${screenName}`); previousReplyId = replyToId; replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
+                    });
+                }
+                else console.log(`Sorry, we have sent too many requests to the youtube API. Please wait until 2 am CST for the quota to reset.`);
+           }
         });
     }, 1000*15)
 }
@@ -164,6 +167,11 @@ function tweetIt(statusText)
     if(tweetsInHour == maxTweetsInHour) 
     { 
         console.log(`Sorry, we have already reached our limit of tweets in an hour: ${maxTweetsInHour}`); 
+        return;
+    }
+    else if(isNaN(subGap()))
+    {
+        console.log(`Sorry, we have sent too many requests to the youtube API. Please wait until 2 am CST for the quota to reset.`);
         return;
     }
     else 
