@@ -34,7 +34,7 @@ tweetIt(`The subgap is currently ${subGap()}! \n\n#PewDiePie #TSeries #MemeRevie
 alertGap();
 negativeAlert();
 tweetSubCount();
-reply('pewdiepie', `The subgap is currenly at ${(getChannelData('pewdiepie') - getChannelData('tseries')).toLocaleString('en')}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+reply('pewdiepie');
 resetConstraints();
 
 function subGap()
@@ -64,6 +64,10 @@ async function alertGap()
         {
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 \n\nThe subgap is now ${subgap.toLocaleString('en')}! \n${selectMessage()} \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
+        else if(subgap > 15000)
+        {
+            tweetIt(`No alert right now. The subgap is now above 15,000 thanks to all you nine year olds! ${subgap}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
+        }
     }, 1000*60*60);
 }
 
@@ -81,7 +85,7 @@ async function negativeAlert()
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE GAP IS POSITIVE AGAIN! \n\n${subgap.toLocaleString('en')}! \nWE WILL KEEP FIGHTING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
             previousGap = subgap;
         }
-    }, 1000*60*1)
+    }, 1000*15)
 }
 
 async function tweetSubCount()
@@ -91,7 +95,7 @@ async function tweetSubCount()
         let pewdsCount = getChannelData('pewdiepie').toLocaleString('en');
         let tCount = getChannelData('tseries').toLocaleString('en');
 
-        tweetIt(`PewDiePie currently has ${pewdsCount}. T-Series currently has ${tCount}. The subgap is currenly at ${subgap}. #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+        tweetIt(`PewDiePie currently has ${pewdsCount}. \n\nT-Series currently has ${tCount}. \n\nThe subgap is currenly at ${subgap}. \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
     }, 1000*60*60*6)
 }
 
@@ -114,22 +118,23 @@ function selectMessage()
   * @param {string} screenName - Who you're replying to.
   * @param {string} tweet - What you're tweeting.
   */
-async function reply(screenName, tweet)
+async function reply(screenName)
 {
     setInterval(function(){
+        let subgap = subGap();
         T.get('statuses/user_timeline', { screen_name: screenName, count: 1 }, function(err, data, response) {
             replyToId = data[0].id_str;
 
             var opts = {
                 in_reply_to_status_id: replyToId,
-                status: `@${screenName} ${tweet}`
+                status: `@${screenName} The subgap is currenly at ${subgap.toLocaleString('en')}! #PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`
             }
 
             if(replyToId !== null && replyToId !== previousReplyId)
             {
                 T.post('statuses/update', opts, function(err, data, response){
                     if(err) console.log(`Something went horribly wrong!: ${err}`)
-                    else { console.log(`Tweeted: '${tweet}' in response to: ${screenName}`); previousReplyId = replyToId; replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
+                    else { console.log(`Tweeted: 'The subgap is currenly at ${subgap.toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds' in response to: ${screenName}`); previousReplyId = replyToId; replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
                 });
             }
         });
@@ -144,7 +149,7 @@ function deleteTweet(id_str)
 {
     T.post('statuses/destroy/:id', { id: id_str }, function(err, data, response){
         if(err) console.log(`Something went horribly wrong!: ${err}`)
-        else {  }
+        else { console.log(`Deleted tweet with id: ${id_str}`) }
     });
 }
 
