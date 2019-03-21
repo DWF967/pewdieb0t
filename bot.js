@@ -26,9 +26,10 @@ var tweetsInHour = 0;
 var replyToId;
 var previousReplyId;
 var previousGap = 1;
+var previous;
 
 console.log(`Bot has started!`)
-tweetIt(`The subgap is currently ${subGap()}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+tweetIt(`The subgap is currently ${subGap().toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
 
 //All async functions called
 alertGap();
@@ -64,10 +65,11 @@ async function alertGap()
         {
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 \n\nThe subgap is now ${subgap.toLocaleString('en')}! \n${selectMessage()} \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
         }
-        else if(subgap > 15000)
+        else if(subgap > dangerZone && previous < dangerZone)
         {
-            tweetIt(`No alert right now. The subgap is now above 15,000 thanks to all you nine year olds! ${subgap}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
+            tweetIt(`No alert right now. The subgap is now above ${dangerZone.toLocaleString()} thanks to all you nine year olds! ${subgap}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
         }
+        previous = subgap;
     }, 1000*60*60);
 }
 
