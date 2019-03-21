@@ -67,7 +67,7 @@ async function alertGap()
         }
         else if(subgap > dangerZone && previous < dangerZone)
         {
-            tweetIt(`No alert right now. The subgap is now above ${dangerZone.toLocaleString()} thanks to all you nine year olds! ${subgap}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
+            tweetIt(`No alert right now. The subgap is now above ${dangerZone.toLocaleString()} thanks to all you nine year olds! ${subgap.toLocaleString()}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
         }
         previous = subgap;
     }, 1000*60*60);
