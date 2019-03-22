@@ -91,11 +91,11 @@ async function negativeAlert()
 async function tweetSubCount()
 {
     setInterval(function(){
-        let subgap = subGap().toLocaleString('en');
-        let pewdsCount = getChannelData('pewdiepie').toLocaleString('en');
-        let tCount = getChannelData('tseries').toLocaleString('en');
+        let pewdsCount = getChannelData('pewdiepie');
+        let tCount = getChannelData('tseries')
+        let subgap = pewdsCount - tCount;
 
-        tweetIt(`PewDiePie currently has ${pewdsCount}. \n\nT-Series currently has ${tCount}. \n\nThe subgap is currenly at ${subgap}. \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
+        tweetIt(`PewDiePie currently has ${pewdsCount.toLocaleString('en')}. \n\nT-Series currently has ${tCount.toLocaleString('en')}. \n\nThe subgap is currenly at ${subgap.toLocaleString('en')}. \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`);
     }, 1000*60*60*6)
 }
 
@@ -109,13 +109,13 @@ async function resetConstraints()
 async function replyToSummons()
 {
     let replyToId;
-    let previousReplyId;
+    let previousReplyId = [];
     setInterval(function(){
-        T.get('search/tweets', { q: '@PewDieB0t What\'s the #SubGap', count: 1 }, function(err, data, response) {
+        T.get('search/tweets', { q: '@PewDieB0t the #SubGap', count: 1 }, function(err, data, response) {
             replyToId = data.statuses[0].id_str;
             let user = data.statuses[0].user
 
-            if(replyToId !== null && replyToId !== previousReplyId)
+            if(replyToId !== null && !previousReplyId.includes(replyToId))
             {
                 let subgap = subGap();
                 if(!isNaN(subgap))
@@ -127,7 +127,7 @@ async function replyToSummons()
 
                     T.post('statuses/update', opts, function(err, data, response){
                         if(err) console.log(`Something went horribly wrong!: ${err}`)
-                        else { console.log(`Tweeted: 'The subgap is currenly at ${subgap.toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds' in response to: ${user.screen_name}.`); previousReplyId = replyToId; replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
+                        else { console.log(`Tweeted: 'The subgap is currenly at ${subgap.toLocaleString('en')}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds' in response to: ${user.screen_name}.`); previousReplyId.push(replyToId); replyToId = null; likeTweet(replyToId); likeTweet(data.id_str); };
                     });
                 }
                 else console.log(`Sorry, we have sent too many requests to the youtube API. Please wait until 2 am CST for the quota to reset.`);
