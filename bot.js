@@ -64,7 +64,7 @@ async function alertGap()
         }
         else if(subgap > dangerZone && previous < dangerZone)
         {
-            tweetIt(`No alert right now. The subgap is now above ${dangerZone.toLocaleString()} thanks to all you nine year olds! ${subgap.toLocaleString()}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
+            tweetIt(`No alert right now. The subgap is now back above ${dangerZone.toLocaleString()} thanks to all you nine year olds! ${subgap.toLocaleString()}! \n\n#PewDiePie #TSeries #MemeReview #Subgap #Sub2Pewds`)
         }
         previous = subgap;
     }, 1000*60*60);
@@ -78,13 +78,16 @@ async function negativeAlert()
         if(subgap < 0 && previousGap > 0)
         {
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE SUBGAP IS NOW NEGATIVE! ${subgap.toLocaleString('en')}! \n\nT-SERIES HAS PASSED PEWDS! THIS IS NOT THE END! \nEVERYONE SUBSCRIBE TO GET PEWDIEPIE BACK! ${selectMessage().toUpperCase()} LETS GET #Sub2Pewds TRENDING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
-            previousGap = subgap;
+        }
+        else if(subgap < 15000 && previousGap > 15000)
+        {
+            tweetIt(`🆘🆘🆘🆘🆘🆘🆘🆘SUBGAP < 15,000!🆘🆘🆘🆘🆘🆘🆘🆘\n\n${subgap.toLocaleString('en')}! SOMEONE DO SOMETHING! SAVE US!\n\n#PewDiePie #TSeries #MemeReview #Subgap`);
         }
         else if(subgap > 0 && previousGap < 0)
         {
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE GAP IS POSITIVE AGAIN! \n\n${subgap.toLocaleString('en')}! \nWE WILL KEEP FIGHTING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
-            previousGap = subgap;
         }
+        previousGap = subgap;
     }, 1000*60*5)
 }
 
