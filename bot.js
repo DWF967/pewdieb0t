@@ -79,9 +79,9 @@ async function negativeAlert()
         {
             tweetIt(`🚨🚨ALERT! ALERT!🚨🚨 THE SUBGAP IS NOW NEGATIVE! ${subgap.toLocaleString('en')}! \n\nT-SERIES HAS PASSED PEWDS! THIS IS NOT THE END! \nEVERYONE SUBSCRIBE TO GET PEWDIEPIE BACK! ${selectMessage().toUpperCase()} LETS GET #Sub2Pewds TRENDING! \n\n#PewDiePie #TSeries #MemeReview #Subgap`);
         }
-        else if(subgap < 15000 && previousGap > 15000)
+        else if(subgap < -15000 && previousGap > -15000)
         {
-            tweetIt(`🆘🆘🆘🆘🆘🆘🆘🆘SUBGAP < 15,000!🆘🆘🆘🆘🆘🆘🆘🆘\n\n${subgap.toLocaleString('en')}! SOMEONE DO SOMETHING! SAVE US!\n\n#PewDiePie #TSeries #MemeReview #Subgap`);
+            tweetIt(`🆘🆘🆘🆘🆘🆘🆘🆘SUBGAP < -15,000!🆘🆘🆘🆘🆘🆘🆘🆘\n\n${subgap.toLocaleString('en')}! SOMEONE DO SOMETHING! SAVE US!\n\n#PewDiePie #TSeries #MemeReview #Subgap`);
         }
         else if(subgap > 0 && previousGap < 0)
         {
